@@ -50,7 +50,7 @@ class UserController extends Controller
         }
 
         if (!empty($keyword)) {
-            $userQuery->where('name', 'LIKE', '%' . $keyword . '%');
+            $userQuery->where('username', 'LIKE', '%' . $keyword . '%');
             $userQuery->where('email', 'LIKE', '%' . $keyword . '%');
         }
 
@@ -81,7 +81,7 @@ class UserController extends Controller
         } else {
             $params = $request->all();
             $user = User::create([
-                'name' => $params['name'],
+                'name' => $params['username'],
                 'email' => $params['email'],
                 'password' => Hash::make($params['password']),
             ]);
@@ -137,7 +137,7 @@ class UserController extends Controller
                 return response()->json(['error' => 'Email has been taken'], 403);
             }
 
-            $user->name = $request->get('name');
+            $user->name = $request->get('username');
             $user->email = $email;
             $user->save();
             return new UserResource($user);
@@ -222,7 +222,7 @@ class UserController extends Controller
     private function getValidationRules($isNew = true)
     {
         return [
-            'name' => 'required',
+            'username' => 'required',
             'email' => $isNew ? 'required|email|unique:users' : 'required|email',
             'roles' => [
                 'required',

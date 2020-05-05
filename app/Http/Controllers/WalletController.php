@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\MemberResource;
-use App\Laravue\Models\Member;
+use App\Laravue\Models\Wallet;
 use Illuminate\Http\Request;
 
-class MemberController extends Controller
+class WalletController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,11 +14,7 @@ class MemberController extends Controller
      */
     public function index()
     {
-        //$searchParams = $request->all();
-        $userQuery = Member::query();
-        //$limit = Arr::get($searchParams, 'limit', static::ITEM_PER_PAGE);
-        return MemberResource::collection($userQuery->paginate(15));
-
+        //
     }
 
     /**
@@ -46,10 +41,10 @@ class MemberController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Laravue\Models\Member  $member
+     * @param  \App\Laravue\Models\Wallet  $wallet
      * @return \Illuminate\Http\Response
      */
-    public function show(Member $member)
+    public function show(Wallet $wallet)
     {
         //
     }
@@ -57,10 +52,10 @@ class MemberController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Laravue\Models\Member  $member
+     * @param  \App\Laravue\Models\Wallet  $wallet
      * @return \Illuminate\Http\Response
      */
-    public function edit(Member $member)
+    public function edit(Wallet $wallet)
     {
         //
     }
@@ -69,10 +64,10 @@ class MemberController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Laravue\Models\Member  $member
+     * @param  \App\Laravue\Models\Wallet  $wallet
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Member $member)
+    public function update(Request $request, Wallet $wallet)
     {
         //
     }
@@ -80,10 +75,10 @@ class MemberController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Laravue\Models\Member  $member
+     * @param  \App\Laravue\Models\Wallet  $wallet
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Member $member)
+    public function destroy(Wallet $wallet)
     {
         //
     }

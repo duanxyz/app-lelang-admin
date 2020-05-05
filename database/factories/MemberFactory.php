@@ -7,6 +7,8 @@ use Faker\Generator as Faker;
 
 $factory->define(Member::class, function (Faker $faker) {
     return [
-        //
+        'user_id' => factory(App\Laravue\Models\User::class)->create(),
+        'name' => $faker->name(),
+        'phone_number' => $faker->phoneNumber,
     ];
 });
