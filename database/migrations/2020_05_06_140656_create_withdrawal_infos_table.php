@@ -15,6 +15,11 @@ class CreateWithdrawalInfosTable extends Migration
     {
         Schema::create('withdrawal_infos', function (Blueprint $table) {
             $table->id();
+            $table->string('wallet_id');
+            $table->string('receiver');
+            $table->string('account_number');
+            $table->bigInteger('withdraw_amount');
+            $table->string('status')->default('not approved');
             $table->timestamps();
         });
     }

@@ -15,6 +15,10 @@ class CreateIdentitiesTable extends Migration
     {
         Schema::create('identities', function (Blueprint $table) {
             $table->id();
+            $table->string('member_id');
+            $table->string('photoID')->nullable();
+            $table->string('selfieID')->nullable();
+            $table->string('status')->default('not verified');
             $table->timestamps();
         });
     }

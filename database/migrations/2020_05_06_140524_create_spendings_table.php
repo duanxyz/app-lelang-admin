@@ -15,6 +15,9 @@ class CreateSpendingsTable extends Migration
     {
         Schema::create('spendings', function (Blueprint $table) {
             $table->id();
+            $table->string('wallet_id');
+            $table->bigInteger('spending_amount')->default(0);
+            $table->string('information')->nullable();
             $table->timestamps();
         });
     }
