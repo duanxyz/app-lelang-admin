@@ -157,8 +157,15 @@ export const asyncRoutes = [
         component: () => import('@/views/members/List'),
         name: 'MemberTable',
         meta: {
-          title: 'memberTable', icon: 'list',
+          title: 'memberTable', icon: 'table',
         },
+      },
+      {
+        path: 'articles/edit/:id(\\d+)',
+        component: () => import('@/views/articles/Edit'),
+        name: 'EditArticle',
+        meta: { title: 'editArticle', noCache: true, permissions: ['manage article'] },
+        hidden: true,
       },
     ],
   },

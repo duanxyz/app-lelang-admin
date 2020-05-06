@@ -17,4 +17,10 @@ class Member extends Model
     {
         return $this->hasOne(Wallet::class);
     }
+
+    public function identity()
+    {
+        return $this->hasOne(Identity::class);
+    }
+
 }

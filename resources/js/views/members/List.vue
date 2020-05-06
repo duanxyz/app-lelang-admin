@@ -61,7 +61,9 @@
       </el-table-column>
       <el-table-column label="Saldo" width="180px" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.saldo.balance }}</span>
+          <router-link :to="'/administrator/articles/edit/'+5853" class="link-type">
+            <span>{{ scope.row.saldo.balance }}</span>
+          </router-link>
         </template>
       </el-table-column>
       <el-table-column label="date" width="150px" align="center">
@@ -72,6 +74,13 @@
       <el-table-column label="status" class-name="status-col" width="100">
         <template slot-scope="{row}">
           <el-tag :type="row.status | statusFilter">{{ row.status }}</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column align="center" label="Actions" width="120">
+        <template slot-scope="scope">
+          <router-link :to="'/administrator/articles/edit/'+scope.row.id">
+            <el-button type="primary" size="small" icon="money">Lihat dompet</el-button>
+          </router-link>
         </template>
       </el-table-column>
     </el-table>

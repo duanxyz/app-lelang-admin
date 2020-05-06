@@ -12,4 +12,19 @@ class Wallet extends Model
     {
         return $this->belongsTo(Member::class);
     }
+
+    public function withdraw()
+    {
+        return $this->hasMany(Withdrawal_info::class);
+    }
+
+    public function deposit()
+    {
+        return $this->hasMany(Deposit_info::class);
+    }
+
+    public function spending()
+    {
+        return $this->hasMany(Spending::class);
+    }
 }
