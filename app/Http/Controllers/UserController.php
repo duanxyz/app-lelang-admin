@@ -1,4 +1,5 @@
 <?php
+
 /**
  * File UserController.php
  *
@@ -20,7 +21,9 @@ use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Validator;
+use Illuminate\Support\Facades\Validator;
+
+// use Validator;
 
 /**
  * Class UserController
@@ -46,7 +49,9 @@ class UserController extends Controller
         $keyword = Arr::get($searchParams, 'keyword', '');
 
         if (!empty($role)) {
-            $userQuery->whereHas('roles', function($q) use ($role) { $q->where('name', $role); });
+            $userQuery->whereHas('roles', function ($q) use ($role) {
+                $q->where('name', $role);
+            });
         }
 
         if (!empty($keyword)) {
@@ -81,7 +86,7 @@ class UserController extends Controller
         } else {
             $params = $request->all();
             $user = User::create([
-                'name' => $params['username'],
+                'username' => $params['username'],
                 'email' => $params['email'],
                 'password' => Hash::make($params['password']),
             ]);
@@ -120,7 +125,8 @@ class UserController extends Controller
         }
 
         $currentUser = Auth::user();
-        if (!$currentUser->isAdmin()
+        if (
+            !$currentUser->isAdmin()
             && $currentUser->id !== $user->id
             && !$currentUser->hasPermission(\App\Laravue\Acl::PERMISSION_USER_MANAGE)
         ) {
@@ -163,7 +169,7 @@ class UserController extends Controller
 
         $permissionIds = $request->get('permissions', []);
         $rolePermissionIds = array_map(
-            function($permission) {
+            function ($permission) {
                 return $permission['id'];
             },
 

@@ -19,7 +19,6 @@ class MemberController extends Controller
         $userQuery = Member::query();
         //$limit = Arr::get($searchParams, 'limit', static::ITEM_PER_PAGE);
         return MemberResource::collection($userQuery->paginate(15));
-
     }
 
     /**
@@ -51,7 +50,7 @@ class MemberController extends Controller
      */
     public function show(Member $member)
     {
-        //
+        return new MemberResource($member);
     }
 
     /**

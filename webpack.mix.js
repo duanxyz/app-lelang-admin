@@ -1,8 +1,6 @@
 const config = require('./webpack.config');
 const mix = require('laravel-mix');
 require('laravel-mix-eslint');
-//var LiveReloadPlugin = require('webpack-livereload-plugin');
-//let plugins = [new LiveReloadPlugin()];
 
 function resolve(dir) {
   return path.join(
@@ -16,8 +14,8 @@ Mix.listen('configReady', webpackConfig => {
   // Add "svg" to image loader test
   const imageLoaderConfig = webpackConfig.module.rules.find(
     rule =>
-      String(rule.test) ===
-      String(/(\.(png|jpe?g|gif|webp)$|^((?!font).)*\.svg$)/)
+    String(rule.test) ===
+    String(/(\.(png|jpe?g|gif|webp)$|^((?!font).)*\.svg$)/)
   );
   imageLoaderConfig.exclude = resolve('icons');
 });

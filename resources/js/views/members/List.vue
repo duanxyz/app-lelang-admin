@@ -39,11 +39,11 @@
           <span>{{ scope.row.index }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Username" width="130px" align="center">
+      <!-- <el-table-column label="Username" width="130px" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.user.username }}</span>
         </template>
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column label="Nama" width="210px" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.name }}</span>
@@ -61,7 +61,7 @@
       </el-table-column>
       <el-table-column label="Saldo" width="180px" align="center">
         <template slot-scope="scope">
-          <router-link :to="'/administrator/articles/edit/'+5853" class="link-type">
+          <router-link :to="'/members/member/view/'+5853" class="link-type">
             <span>{{ scope.row.saldo.balance }}</span>
           </router-link>
         </template>
@@ -78,8 +78,8 @@
       </el-table-column>
       <el-table-column align="center" label="Actions" width="120">
         <template slot-scope="scope">
-          <router-link :to="'/administrator/articles/edit/'+scope.row.id">
-            <el-button type="primary" size="small" icon="money">Lihat dompet</el-button>
+          <router-link :to="'/members/member/view/'+scope.row.id">
+            <el-button type="primary" size="small" icon="money">dompet</el-button>
           </router-link>
         </template>
       </el-table-column>

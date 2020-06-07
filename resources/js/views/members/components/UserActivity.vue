@@ -1,10 +1,11 @@
 <template>
-  <el-card v-if="user.username">
+  <el-card v-if="user.name">
     <el-tabs v-model="activeActivity" @tab-click="handleClick">
       <el-tab-pane label="Activity" name="first">
         <div class="user-activity">
           <div class="post">
             <div class="user-block">
+              // eslint-disable-next-line vue/html-self-closing
               <img
                 class="img-circle"
                 src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRDkaQO69Fro8SZLTVZQ75JH2R0T-sn5yIA_lKGwvvgQ0R0BoQtUQ"
@@ -68,9 +69,7 @@
               to Charlie Sheen fans.
             </p>
             <el-input placeholder="Response">
-              <el-button slot="append">
-                Send
-              </el-button>
+              <el-button slot="append">Send</el-button>
             </el-input>
           </div>
           <div class="post">
@@ -117,49 +116,59 @@
           </div>
         </div>
       </el-tab-pane>
-      <el-tab-pane label="Timeline" name="second">
-        <div class="block">
-          <el-timeline>
-            <el-timeline-item timestamp="2019/4/17" placement="top">
-              <el-card>
-                <h4>Update Github template</h4>
-                <p>tuandm committed 2019/4/17 20:46</p>
-              </el-card>
-            </el-timeline-item>
-            <el-timeline-item timestamp="2019/4/18" placement="top">
-              <el-card>
-                <h4>Update Github template</h4>
-                <p>tonynguyen committed 2019/4/18 20:46</p>
-              </el-card>
-              <el-card>
-                <h4>Update Github template</h4>
-                <p>tuandm committed 2019/4/19 21:16</p>
-              </el-card>
-            </el-timeline-item>
-            <el-timeline-item timestamp="2019/4/19" placement="top">
-              <el-card>
-                <h4>
-                  Deploy
-                  <a href="https://laravue.dev" target="_blank">laravue.dev</a>
-                </h4>
-                <p>tuandm deployed 2019/4/19 10:23</p>
-              </el-card>
-            </el-timeline-item>
-          </el-timeline>
-        </div>
+      <el-tab-pane label="Info Deposit" name="second">
+        <el-table :data="deposit" style="width: 100%">
+          <el-table-column fixed prop="sent_date" label="Tanggal Kirim" width="120" align="center" />
+          <el-table-column prop="sender" label="Nama Pengirim" width="150" align="center" />
+          <el-table-column prop="account_number" label="No. Rekening" width="160" align="center" />
+          <el-table-column prop="deposit_amount" label="Jumlah" width="130" align="center" />
+          <el-table-column label="Bukti" width="120" align="center">
+            <template slot-scope="scope">
+              <el-image
+                :src="scope.row.proof"
+                style="width: 50px; height: 50px;"
+                :preview-src-list="srcList"
+              />
+            </template>
+          </el-table-column>
+          <el-table-column prop="status" label="Status" width="120" />
+          <el-table-column fixed="right" label="Operations" width="120">
+            <template slot-scope="scope">
+              <el-button
+                size="mini"
+                type="success"
+                @click="updateData(scope.row.wallet_id, scope.row)"
+              >Terima</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
       </el-tab-pane>
-      <el-tab-pane v-loading="updating" label="Account" name="third">
-        <el-form-item label="Name">
-          <el-input v-model="user.username" :disabled="user.role === 'admin'" />
-        </el-form-item>
-        <el-form-item label="Email">
-          <el-input v-model="user.email" :disabled="user.role === 'admin'" />
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" :disabled="user.role === 'admin'" @click="onSubmit">
-            Update
-          </el-button>
-        </el-form-item>
+      <el-tab-pane label="Info Withdraw" name="third">
+        <el-table :data="deposit" style="width: 100%">
+          <el-table-column fixed prop="sent_date" label="Tanggal Kirim" width="120" align="center" />
+          <el-table-column prop="sender" label="Nama Pengirim" width="150" align="center" />
+          <el-table-column prop="account_number" label="No. Rekening" width="160" align="center" />
+          <el-table-column prop="deposit_amount" label="Jumlah" width="130" align="center" />
+          <el-table-column label="Bukti" width="120" align="center">
+            <template slot-scope="scope">
+              <el-image
+                :src="scope.row.proof"
+                style="width: 50px; height: 50px;"
+                :preview-src-list="srcList"
+              />
+            </template>
+          </el-table-column>
+          <el-table-column prop="status" label="Status" width="120" />
+          <el-table-column fixed="right" label="Operations" width="120">
+            <template slot-scope="scope">
+              <el-button
+                size="mini"
+                type="success"
+                @click="updateData(scope.row.wallet_id, scope.row)"
+              >Terima</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
       </el-tab-pane>
     </el-tabs>
   </el-card>
@@ -167,17 +176,46 @@
 
 <script>
 import Resource from '@/api/resource';
-const userResource = new Resource('users');
+const userResource = new Resource('members');
 
 export default {
   props: {
+    // eslint-disable-next-line vue/require-default-prop
+    method: { type: Function },
+    deposit: {
+      type: Array,
+      default: () => {
+        return {
+          wallet_id: '',
+          sender: '',
+          account_number: '',
+          deposit_amount: '',
+          proof: '',
+          sent_date: '',
+          status: '',
+        };
+      },
+    },
+    withdraw: {
+      type: Array,
+      default: () => {
+        return {};
+      },
+    },
+    spending: {
+      type: Array,
+      default: () => {
+        return {};
+      },
+    },
     user: {
       type: Object,
       default: () => {
         return {
-          username: '',
+          name: '',
           email: '',
           avatar: '',
+          balance: '',
           roles: [],
         };
       },
@@ -185,6 +223,7 @@ export default {
   },
   data() {
     return {
+      srcList: ['https://i.pravatar.cc'],
       activeActivity: 'first',
       carouselImages: [
         'https://cdn.laravue.dev/photo1.png',
@@ -196,6 +235,12 @@ export default {
     };
   },
   methods: {
+    updateData(id, row) {
+      this.method(id, row);
+    },
+    handleClick1() {
+      console.log('click');
+    },
     handleClick(tab, event) {
       console.log('Switching tab ', tab, event);
     },
@@ -223,7 +268,8 @@ export default {
 <style lang="scss" scoped>
 .user-activity {
   .user-block {
-    .username, .description {
+    .username,
+    .description {
       display: block;
       margin-left: 50px;
       padding: 2px 0;
@@ -270,7 +316,8 @@ export default {
       font-size: 13px;
     }
     .link-black {
-      &:hover, &:focus {
+      &:hover,
+      &:focus {
         color: #999;
       }
     }
@@ -287,7 +334,7 @@ export default {
     background-color: #99a9bf;
   }
 
-  .el-carousel__item:nth-child(2n+1) {
+  .el-carousel__item:nth-child(2n + 1) {
     background-color: #d3dce6;
   }
 }

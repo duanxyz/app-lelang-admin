@@ -25,6 +25,7 @@ class MemberResource extends JsonResource
             'status' => $this->status,
             'saldo' => Wallet::find($this->id),
             'created_at' => $this->created_at,
+            'avatar' => 'https://i.pravatar.cc',
         ];
     }
 }

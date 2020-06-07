@@ -1,6 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+// var LiveReloadPlugin = require('webpack-livereload-plugin');
 
 function resolve(dir) {
   return path.join(

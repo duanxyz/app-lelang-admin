@@ -137,3 +137,5 @@ Route::get('articles/{id}/pageviews', function ($id) {
     return response()->json(new JsonResponse(['pvData' => $data]));
 });
 Route::apiResource('members', 'MemberController');
+Route::apiResource('wallets', 'WalletController');
+Route::apiResource('deposits', 'DepositInfoController');
