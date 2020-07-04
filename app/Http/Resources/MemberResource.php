@@ -19,12 +19,16 @@ class MemberResource extends JsonResource
         // return parent::toArray($request);
         return [
             'id' => $this->id,
-            'user' => User::find($this->user_id),
+            'user_id' => User::find($this->user_id)->id,
+            'username' => User::find($this->user_id)->username,
+            'email' => User::find($this->user_id)->email,
             'name' => $this->name,
             'phone_number' => $this->phone_number,
             'status' => $this->status,
-            'saldo' => Wallet::find($this->id),
+            'wallet_id' => Wallet::find($this->id)->id,
+            'saldo' => Wallet::find($this->id)->balance,
             'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
             'avatar' => 'https://i.pravatar.cc',
         ];
     }

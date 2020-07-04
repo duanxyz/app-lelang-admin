@@ -147,7 +147,7 @@ export const asyncRoutes = [
     redirect: '/members/member-table',
     name: 'Member',
     meta: {
-      title: 'table',
+      title: 'Member Table',
       icon: 'table',
       permissions: ['view menu table'],
     },
@@ -157,7 +157,23 @@ export const asyncRoutes = [
         component: () => import('@/views/members/List'),
         name: 'MemberTable',
         meta: {
-          title: 'memberTable', icon: 'table',
+          title: 'Member Table', icon: 'table',
+        },
+      },
+      {
+        path: 'deposit-table',
+        component: () => import('@/views/members/deposits/List'),
+        name: 'DepositTable',
+        meta: {
+          title: 'Deposit Table', icon: 'table',
+        },
+      },
+      {
+        path: 'withdraw-table',
+        component: () => import('@/views/members/withdraw/List'),
+        name: 'WithdrawTable',
+        meta: {
+          title: 'Withdraw Table', icon: 'table',
         },
       },
       {

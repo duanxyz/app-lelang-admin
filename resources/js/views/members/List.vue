@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <div class="filter-container">
+    <!-- <div class="filter-container">
       <el-input
         v-model="listQuery.title"
         :placeholder="$t('table.title')"
@@ -23,7 +23,7 @@
         icon="el-icon-download"
         @click="handleDownload"
       >{{ $t('table.export') }}</el-button>
-    </div>
+    </div> -->
 
     <el-table
       v-loading="listLoading"
@@ -51,7 +51,7 @@
       </el-table-column>
       <el-table-column label="Email" width="225px" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.user.email }}</span>
+          <span>{{ scope.row.email }}</span>
         </template>
       </el-table-column>
       <el-table-column label="No Telpon" width="180px" align="center">
@@ -62,13 +62,13 @@
       <el-table-column label="Saldo" width="180px" align="center">
         <template slot-scope="scope">
           <router-link :to="'/members/member/view/'+5853" class="link-type">
-            <span>{{ scope.row.saldo.balance }}</span>
+            <span>{{ scope.row.saldo }}</span>
           </router-link>
         </template>
       </el-table-column>
       <el-table-column label="date" width="150px" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.created_at | parseTime('{y}-{m}-{d} {h}{i}') }}</span>
+          <span>{{ scope.row.created_at | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
       <el-table-column label="status" class-name="status-col" width="100">
@@ -79,7 +79,7 @@
       <el-table-column align="center" label="Actions" width="120">
         <template slot-scope="scope">
           <router-link :to="'/members/member/view/'+scope.row.id">
-            <el-button type="primary" size="small" icon="money">dompet</el-button>
+            <el-button type="primary" size="small" icon="money">Detail</el-button>
           </router-link>
         </template>
       </el-table-column>
@@ -103,7 +103,7 @@ import waves from '@/directive/waves'; // Waves directive
 import Pagination from '@/components/Pagination'; // Secondary package based on el-pagination
 
 export default {
-  name: 'MemberTable',
+  // name: 'MemberTable',
   components: { Pagination },
   directives: { waves },
   filters: {

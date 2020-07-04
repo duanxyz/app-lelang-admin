@@ -7,7 +7,7 @@
           <!-- <user-bio /> -->
         </el-col>
         <el-col :span="18">
-          <user-activity :user="user" :wallet="wallet" :deposit="deposit" :method="updateData" />
+          <user-activity :user="user" :wallet="wallet" :deposit="deposit" :withdraw="withdraw" :spending="spending" :method="updateData" />
         </el-col>
       </el-row>
     </el-form>
@@ -64,13 +64,13 @@ export default {
       this.withdraw = withdraw;
       this.spending = spending;
     },
-    updateData(id, row) {
+    updateData(id, row, msg) {
       walletResource
         .update(id, row)
         .then(response => {
           this.$message({
             type: 'success',
-            message: 'Deposit info has been updated successfully',
+            message: msg + ' info has been updated successfully',
             duration: 5 * 1000,
           });
           this.getUser(id);

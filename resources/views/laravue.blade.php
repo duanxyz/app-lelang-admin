@@ -31,9 +31,9 @@
     <div id="app">
         <app></app>
     </div>
-    {{-- @if(config('app.env') == 'local')
-    <script src="http://lelang.test/livereload.js"></script>
-    @endif --}}
+    @if(config('app.env') == 'local')
+    <script src="http://localhost:35729/livereload.js"></script>
+    @endif
     <script src=/static/tinymce4.7.5/tinymce.min.js> </script> <script src="{{ mix('js/vendor.js') }}"></script>
     <script src="{{ mix('js/manifest.js') }}"></script>
     <script src="{{ mix('js/app.js') }}"></script>

@@ -86,16 +86,23 @@ class WalletController extends Controller
             ]
         );
 
+        $status = "approve";
+
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 403);
         } else {
             $params = $request->all();
-            $wallet->balance = $wallet->balance + $params['deposit_amount'];
+            if (array_key_exists("sender", $params)) {
+                $wallet->balance = $wallet->balance + $params['deposit_amount'];
+                $relasi = $wallet->deposit();
+            } else {
+                $wallet->balance = $wallet->balance - $params['withdraw_amount'];
+                $relasi = $wallet->withdraw();
+            }
             $wallet->save();
-            $wallet->deposit()->where(['id' => $params['id']])->update([
-                'status' => 'approve',
+            $relasi->where(['id' => $params['id']])->update([
+                'status' => $status,
             ]);
-            $user = Member::find($params['wallet_id']);
         }
 
         return new walletResource($wallet);

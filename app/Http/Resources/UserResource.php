@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Laravue\Models\Member;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class UserResource extends JsonResource
@@ -15,7 +16,11 @@ class UserResource extends JsonResource
     public function toArray($request)
     {
         return [
+
+            // 'success' => true,
+            // 'data' => [
             'id' => $this->id,
+            'memberId' => $this->id + 5,
             'username' => $this->username,
             'email' => $this->email,
             'roles' => array_map(
@@ -31,6 +36,7 @@ class UserResource extends JsonResource
                 $this->getAllPermissions()->toArray()
             ),
             'avatar' => 'https://i.pravatar.cc',
+            // ],
         ];
     }
 }

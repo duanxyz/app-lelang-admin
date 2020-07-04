@@ -1,7 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-// var LiveReloadPlugin = require('webpack-livereload-plugin');
+var LiveReloadPlugin = require('webpack-livereload-plugin');
 
 function resolve(dir) {
   return path.join(
@@ -14,7 +14,7 @@ function resolve(dir) {
 const rawArgv = process.argv.slice(2);
 const args = rawArgv.join(' ');
 const report = rawArgv.includes('--report');
-let plugins = [];
+const plugins = [new LiveReloadPlugin()];
 if (report) {
   plugins.push(new BundleAnalyzerPlugin({
     openAnalyzer: true,

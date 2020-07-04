@@ -139,3 +139,6 @@ Route::get('articles/{id}/pageviews', function ($id) {
 Route::apiResource('members', 'MemberController');
 Route::apiResource('wallets', 'WalletController');
 Route::apiResource('deposits', 'DepositInfoController');
+Route::apiResource('withdrawals', 'WithdrawalInfoController');
+Route::apiResource('items', 'ItemController');
+Route::apiResource('auctions', 'AuctionController');

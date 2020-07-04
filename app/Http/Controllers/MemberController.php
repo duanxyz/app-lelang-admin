@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\MemberResource;
 use App\Laravue\Models\Member;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 
 class MemberController extends Controller
 {
@@ -13,10 +14,14 @@ class MemberController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //$searchParams = $request->all();
+        $params = $request->all();
         $userQuery = Member::query();
+        $byId = Arr::get($params, 'id', '');
+        if ((!empty($byId))) {
+            $userQuery->where('id', $byId);
+        }
         //$limit = Arr::get($searchParams, 'limit', static::ITEM_PER_PAGE);
         return MemberResource::collection($userQuery->paginate(15));
     }
@@ -37,9 +42,11 @@ class MemberController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, Member $member)
     {
-        //
+        $create = $member->create($request->all());
+
+        return new MemberResource($create);
     }
 
     /**
@@ -73,7 +80,13 @@ class MemberController extends Controller
      */
     public function update(Request $request, Member $member)
     {
-        //
+        $params = $request->all();
+        $member->update([
+            'name' => $params['name'],
+            'phone_number' => $params['phone_number'],
+        ]);
+
+        return new MemberResource($member);
     }
 
     /**

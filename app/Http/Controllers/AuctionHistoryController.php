@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\WithdrawalInfoResource;
-use App\Laravue\Models\Withdrawal_info;
+use App\Laravue\Models\Auction_history;
 use Illuminate\Http\Request;
 
-class WithdrawalInfoController extends Controller
+class AuctionHistoryController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,10 +14,7 @@ class WithdrawalInfoController extends Controller
      */
     public function index()
     {
-        //$searchParams = $request->all();
-        $userQuery = Withdrawal_info::query()->where('status', "not approved");
-        //$limit = Arr::get($searchParams, 'limit', static::ITEM_PER_PAGE);
-        return WithdrawalInfoResource::collection($userQuery->paginate(15));
+        //
     }
 
     /**
@@ -45,10 +41,10 @@ class WithdrawalInfoController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Laravue\Models\Withdrawal_info  $withdrawal_info
+     * @param  \App\Laravue\Models\auction_history  $auction_history
      * @return \Illuminate\Http\Response
      */
-    public function show(Withdrawal_info $withdrawal_info)
+    public function show(auction_history $auction_history)
     {
         //
     }
@@ -56,10 +52,10 @@ class WithdrawalInfoController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Laravue\Models\Withdrawal_info  $withdrawal_info
+     * @param  \App\Laravue\Models\auction_history  $auction_history
      * @return \Illuminate\Http\Response
      */
-    public function edit(Withdrawal_info $withdrawal_info)
+    public function edit(auction_history $auction_history)
     {
         //
     }
@@ -68,10 +64,10 @@ class WithdrawalInfoController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Laravue\Models\Withdrawal_info  $withdrawal_info
+     * @param  \App\Laravue\Models\auction_history  $auction_history
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Withdrawal_info $withdrawal_info)
+    public function update(Request $request, auction_history $auction_history)
     {
         //
     }
@@ -79,10 +75,10 @@ class WithdrawalInfoController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Laravue\Models\Withdrawal_info  $withdrawal_info
+     * @param  \App\Laravue\Models\auction_history  $auction_history
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Withdrawal_info $withdrawal_info)
+    public function destroy(auction_history $auction_history)
     {
         //
     }

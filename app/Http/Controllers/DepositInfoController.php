@@ -16,7 +16,10 @@ class DepositInfoController extends Controller
      */
     public function index()
     {
-        //
+        //$searchParams = $request->all();
+        $userQuery = Deposit_info::query()->where('status', "not approved");
+        //$limit = Arr::get($searchParams, 'limit', static::ITEM_PER_PAGE);
+        return DepositInfoResource::collection($userQuery->paginate(15));
     }
 
     /**
@@ -71,32 +74,7 @@ class DepositInfoController extends Controller
      */
     public function update(Request $request, Deposit_info $deposit_info)
     {
-        if ($deposit_info === null) {
-            return response()->json(['error' => 'Deposit not found'], 404);
-        }
-
-        $validator = Validator::make(
-            $request->all(),
-            [
-                'wallet_id' => ['required']
-            ]
-        );
-
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 403);
-        } else {
-            $params = $request->all();
-            $params['status'] = "approve";
-            // $deposit_info->wallet_id = $params['wallet_id'];
-            // $deposit_info->sender = $params['sender'];
-            // $deposit_info->account_number = $params['account_number'];
-            // $deposit_info->deposit_amount = $params['deposit_amount'];
-            // $deposit_info->sent_date = $params['sent_date'];
-            $deposit_info->status = $params['status'];
-            $deposit_info->save();
-        }
-
-        return new DepositInfoResource($deposit_info);
+        //
     }
 
     /**
