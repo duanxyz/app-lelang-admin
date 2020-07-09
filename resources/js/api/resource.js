@@ -34,6 +34,13 @@ class Resource {
       data: resource,
     });
   }
+  updatePost(id, resource) {
+    return request({
+      url: '/' + this.uri + '/' + id,
+      method: 'post',
+      data: resource,
+    });
+  }
   destroy(id) {
     return request({
       url: '/' + this.uri + '/' + id,

@@ -2,9 +2,10 @@
   <div class="login-container">
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
       <h3 class="title">
-        {{ $t('login.title') }}
+        Lelang Online
       </h3>
-      <lang-select class="set-language" />
+
+      <!-- <lang-select class="set-language" /> -->
       <el-form-item prop="email">
         <span class="svg-container">
           <svg-icon icon-class="user" />
@@ -28,36 +29,36 @@
         </span>
       </el-form-item>
       <el-form-item>
-        <el-button :loading="loading" type="primary" style="width:100%;" @click.native.prevent="handleLogin">
-          Sign in
+        <el-button :loading="loading" type="success" style="width:100%;" @click.native.prevent="handleLogin">
+          Masuk
         </el-button>
       </el-form-item>
-      <div class="tips">
+      <!-- <div class="tips">
         <span style="margin-right:20px;">Email: admin@laravue.dev</span>
         <span>Password: laravue</span>
-      </div>
+      </div> -->
     </el-form>
   </div>
 </template>
 
 <script>
-import LangSelect from '@/components/LangSelect';
+// import LangSelect from '@/components/LangSelect';
 import { validEmail } from '@/utils/validate';
 
 export default {
   name: 'Login',
-  components: { LangSelect },
+  // components: { LangSelect },
   data() {
     const validateEmail = (rule, value, callback) => {
       if (!validEmail(value)) {
-        callback(new Error('Please enter the correct email'));
+        callback(new Error('Silakan masukkan email yang benar'));
       } else {
         callback();
       }
     };
     const validatePass = (rule, value, callback) => {
       if (value.length < 4) {
-        callback(new Error('Password cannot be less than 4 digits'));
+        callback(new Error('Kata sandi tidak boleh kurang dari 4 digit'));
       } else {
         callback();
       }
@@ -149,7 +150,7 @@ $light_gray:#eee;
 </style>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-$bg:#2d3a4b;
+$bg:#004E43;
 $dark_gray:#889aa4;
 $light_gray:#eee;
 .login-container {

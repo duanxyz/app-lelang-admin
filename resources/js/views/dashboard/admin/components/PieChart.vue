@@ -21,6 +21,19 @@ export default {
       type: String,
       default: '300px',
     },
+    category: {
+      type: Object,
+      default: () => {
+        return {
+          kendaraan: '',
+          elektronik: '',
+          emas: '',
+          perikanan: '',
+          pertanian: '',
+          sertifikat: '',
+        };
+      },
+    },
   },
   data() {
     return {
@@ -29,6 +42,7 @@ export default {
   },
   mounted() {
     this.initChart();
+
     this.__resizeHandler = debounce(() => {
       if (this.chart) {
         this.chart.resize();
@@ -47,7 +61,6 @@ export default {
   methods: {
     initChart() {
       this.chart = echarts.init(this.$el, 'macarons');
-
       this.chart.setOption({
         tooltip: {
           trigger: 'item',
@@ -56,22 +69,30 @@ export default {
         legend: {
           left: 'center',
           bottom: '10',
-          data: ['Industries', 'Technology', 'Forex', 'Gold', 'Forecasts'],
+          data: [
+            'Elektronik',
+            'Sertifikat',
+            'Emas',
+            'Perikanan',
+            'Pertanian',
+            'Kendaraan',
+          ],
         },
         calculable: true,
         series: [
           {
-            name: 'WEEKLY WRITE ARTICLES',
+            name: 'TOTAL KATETGORI',
             type: 'pie',
             roseType: 'radius',
             radius: [15, 95],
             center: ['50%', '38%'],
             data: [
-              { value: 320, name: 'Industries' },
-              { value: 240, name: 'Technology' },
-              { value: 149, name: 'Forex' },
-              { value: 100, name: 'Gold' },
-              { value: 59, name: 'Forecasts' },
+              { value: this.category.elektronik, name: 'Elektronik' },
+              { value: this.category.sertifikat, name: 'Sertifikat' },
+              { value: this.category.emas, name: 'Emas' },
+              { value: this.category.perikanan, name: 'Perikanan' },
+              { value: this.category.pertanian, name: 'Pertanian' },
+              { value: this.category.kendaraan, name: 'Kendaraan' },
             ],
             animationEasing: 'cubicInOut',
             animationDuration: 2600,

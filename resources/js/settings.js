@@ -4,7 +4,7 @@ export default {
   /**
    * @type {String}
    */
-  title: 'Laravel Vue Admin',
+  title: 'Lelang Online Pegadaian',
   theme: variables.theme,
 
   /**

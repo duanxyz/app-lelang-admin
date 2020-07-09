@@ -35,6 +35,18 @@ const adminRoutes = {
       meta: { title: 'rolePermission', icon: 'role', permissions: ['manage permission'] },
     },
     {
+      path: 'category',
+      component: () => import('@/views/category/List'),
+      name: 'CategoryList',
+      meta: { title: 'category', icon: 'category', permissions: ['manage permission'] },
+    },
+    {
+      path: 'bank',
+      component: () => import('@/views/bank/List'),
+      name: 'BankList',
+      meta: { title: 'bank', icon: 'bank', permissions: ['manage permission'] },
+    },
+    {
       path: 'articles/create',
       component: () => import('@/views/articles/Create'),
       name: 'CreateArticle',

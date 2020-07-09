@@ -1,5 +1,7 @@
 <?php
 
+use App\Laravue\Models\Bank;
+use App\Laravue\Models\Category;
 use App\Laravue\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -38,6 +40,26 @@ class DatabaseSeeder extends Seeder
             'username' => 'Visitor',
             'email' => 'visitor@laravue.dev',
             'password' => Hash::make('laravue'),
+        ]);
+
+        $category = [
+            'elektronik',
+            'emas',
+            'pertanian',
+            'perikanan',
+            'sertifikat',
+            'kendaraan',
+        ];
+        for ($i = 0; $i < 6; $i++) {
+            Category::create([
+                'category_name' => $category[$i],
+            ]);
+        }
+
+        Bank::create([
+            'bank_name' => 'BNI',
+            'account_number' => '129321',
+            'name' => 'Muhammad Ridwan',
         ]);
 
         $adminRole = Role::findByName(\App\Laravue\Acl::ROLE_ADMIN);

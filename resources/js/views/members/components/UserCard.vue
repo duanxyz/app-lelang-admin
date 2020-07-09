@@ -18,7 +18,7 @@
               <span>Email</span>
             </div>
             <div class="user-bio-section-body">
-              <div class="text-muted">{{ user.user.email }}</div>
+              <div class="text-muted">{{ user.email }}</div>
             </div>
           </div>
           <div class="user-bio-section">

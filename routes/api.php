@@ -142,3 +142,7 @@ Route::apiResource('deposits', 'DepositInfoController');
 Route::apiResource('withdrawals', 'WithdrawalInfoController');
 Route::apiResource('items', 'ItemController');
 Route::apiResource('auctions', 'AuctionController');
+Route::apiResource('results', 'AuctionHistoryController');
+Route::apiResource('reporting', 'ReportingController');
+Route::apiResource('categories', 'CategoryController');
+Route::apiResource('banks', 'BankController');

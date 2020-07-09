@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\AuctionHistoryResource;
 use App\Laravue\Models\Auction_history;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 
 class AuctionHistoryController extends Controller
 {
@@ -12,9 +14,18 @@ class AuctionHistoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $searchParams = $request->all();
+        $resultQuery = Auction_history::query();
+        $limit = Arr::get($searchParams, 'limit');
+        $keyword = Arr::get($searchParams, 'keyword', '');
+
+        if (!empty($keyword)) {
+            $resultQuery->where('item_name', 'LIKE', '%' . $keyword . '%');
+        }
+
+        return AuctionHistoryResource::collection($resultQuery->paginate($limit));
     }
 
     /**

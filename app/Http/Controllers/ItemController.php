@@ -2,13 +2,19 @@
 
 namespace App\Http\Controllers;
 
+// namespace App\Traits;
+
 use App\Http\Resources\ItemResource;
 use App\Laravue\Models\Item;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Validator;
+use App\Traits\ImageUpload;
 
 class ItemController extends Controller
 {
+    use ImageUpload;
+
     /**
      * Display a listing of the resource.
      *
@@ -54,7 +60,36 @@ class ItemController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'item_name' => ['required'],
+                'category' => ['required'],
+                'deskripsi' => ['required'],
+                'photo' => ['required'],
+                'initial_price' => ['required'],
+                'auction_date' => ['required'],
+                'auction_time' => ['required'],
+            ]
+        );
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 403);
+        } else {
+            $imageName = time() . '.' . $request->file('photo')->getClientOriginalExtension();
+            $request->file('photo')->move(public_path('images/items'), $imageName);
+            $params = $request->all();
+            $item = Item::create([
+                'item_name' => $params['item_name'],
+                'category' => $params['category'],
+                'deskripsi' => $params['deskripsi'],
+                'photo' => $imageName,
+                'initial_price' => $params['initial_price'],
+                'auction_date' => $params['auction_date'],
+                'auction_time' => $params['auction_time'],
+            ]);
+            return new ItemResource($item);
+        }
     }
 
     /**
@@ -103,7 +138,49 @@ class ItemController extends Controller
      */
     public function update(Request $request, Item $item)
     {
-        //
+        if ($item === null) {
+            return response()->json(['error' => 'barang not found'], 404);
+        }
+
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'item_name' => ['required'],
+                'category' => ['required'],
+                'deskripsi' => ['required'],
+                // 'photo' => ['required'],
+                'initial_price' => ['required'],
+                'auction_date' => ['required'],
+                'auction_time' => ['required'],
+            ]
+        );
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 403);
+        } else {
+
+            $params = $request->all();
+
+            if ($request->hasFile('photo')) {
+                $imageName = time() . '.' . $request->file('photo')->getClientOriginalExtension();
+                $request->file('photo')->move(public_path('images/items'), $imageName);
+                if (file_exists(public_path('images/items/' . $item->photo))) {
+                    unlink(public_path('images/items/' . $item->photo));
+                } else {
+                    echo "File does not exists";
+                }
+                $item->photo = $imageName;
+            }
+            $item->item_name = $params['item_name'];
+            $item->category = $params['category'];
+            $item->deskripsi = $params['deskripsi'];
+            $item->initial_price = $params['initial_price'];
+            $item->auction_date = $params['auction_date'];
+            $item->auction_time = $params['auction_time'];
+            $item->save();
+        }
+
+        return new itemResource($item);
     }
 
     /**
@@ -114,6 +191,12 @@ class ItemController extends Controller
      */
     public function destroy(Item $item)
     {
-        //
+        try {
+            $item->delete();
+        } catch (\Exception $ex) {
+            response()->json(['error' => $ex->getMessage()], 403);
+        }
+
+        return response()->json(null, 204);
     }
 }
