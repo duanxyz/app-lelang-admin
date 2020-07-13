@@ -27,7 +27,8 @@ class ItemController extends Controller
         $limit = Arr::get($searchParams, 'limit');
         $category = Arr::get($searchParams, 'category', '');
         $keyword = Arr::get($searchParams, 'keyword', '');
-        $status = Arr::get($searchParams, 'date', '');
+        $date = Arr::get($searchParams, 'date', '');
+        $status = Arr::get($searchParams, 'status', '');
         if (!empty($category)) {
             $itemQuery->where('category', 'LIKE', '%' . $category . '%');
         }
@@ -36,8 +37,12 @@ class ItemController extends Controller
             $itemQuery->where('item_name', 'LIKE', '%' . $keyword . '%');
         }
 
+        if (!empty($date)) {
+            $itemQuery->where('auction_date', 'LIKE', '%' . $date . '%');
+        }
+
         if (!empty($status)) {
-            $itemQuery->where('auction_date', 'LIKE', '%' . $status . '%');
+            $itemQuery->where('status', $status);
         }
         return itemResource::collection($itemQuery->paginate($limit));
     }

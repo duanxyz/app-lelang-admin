@@ -146,3 +146,4 @@ Route::apiResource('results', 'AuctionHistoryController');
 Route::apiResource('reporting', 'ReportingController');
 Route::apiResource('categories', 'CategoryController');
 Route::apiResource('banks', 'BankController');
+Route::post('login', 'MemberController@login');

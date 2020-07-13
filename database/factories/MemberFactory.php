@@ -10,5 +10,6 @@ $factory->define(Member::class, function (Faker $faker) {
         'user_id' => factory(App\Laravue\Models\User::class)->create(),
         'name' => $faker->name(),
         'phone_number' => $faker->phoneNumber,
+        'created_at' => $faker->dateTimeBetween($startDate = '-3 years', $endDate = 'now', $timezone = null)
     ];
 });

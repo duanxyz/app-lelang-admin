@@ -104,6 +104,7 @@ export default {
       }
     },
     handleCreateForm() {
+      this.formTitle = 'Create new category';
       this.categoryFormVisible = true;
       this.currentCategory = {
         category_name: '',

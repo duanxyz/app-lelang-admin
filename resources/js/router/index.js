@@ -13,11 +13,7 @@ Vue.use(Router);
 import Layout from '@/layout';
 
 /* Router for modules */
-import componentRoutes from './modules/components';
-import chartsRoutes from './modules/charts';
-import tableRoutes from './modules/table';
 import adminRoutes from './modules/admin';
-import errorRoutes from './modules/error';
 
 /**
  * Sub-menu only appear when children.length>=1
@@ -88,34 +84,17 @@ export const constantRoutes = [
       },
     ],
   },
-  {
-    path: '/profile',
-    component: Layout,
-    redirect: '/profile/edit',
-    children: [
-      {
-        path: 'edit',
-        component: () => import('@/views/users/SelfProfile'),
-        name: 'SelfProfile',
-        meta: { title: 'userProfile', icon: 'user', noCache: true },
-      },
-    ],
-  },
 ];
 
 export const asyncRoutes = [
-  componentRoutes,
-  chartsRoutes,
-  tableRoutes,
-  adminRoutes,
   {
     path: '/members',
     component: Layout,
     redirect: '/members/member-table',
     name: 'Member',
     meta: {
-      title: 'Table Member',
-      icon: 'table',
+      title: 'Member',
+      icon: 'peoples',
       permissions: ['view menu table'],
     },
     children: [
@@ -124,7 +103,7 @@ export const asyncRoutes = [
         component: () => import('@/views/members/List'),
         name: 'MemberTable',
         meta: {
-          title: 'Table Member', icon: 'table',
+          title: 'Table Member', icon: 'peoples',
         },
       },
       {
@@ -132,7 +111,7 @@ export const asyncRoutes = [
         component: () => import('@/views/members/deposits/List'),
         name: 'DepositTable',
         meta: {
-          title: 'Table Deposit', icon: 'table',
+          title: 'Table Deposit', icon: 'deposit',
         },
       },
       {
@@ -140,7 +119,7 @@ export const asyncRoutes = [
         component: () => import('@/views/members/withdraw/List'),
         name: 'WithdrawTable',
         meta: {
-          title: 'Table Withdraw', icon: 'table',
+          title: 'Table Withdraw', icon: 'withdraw',
         },
       },
       {
@@ -158,8 +137,8 @@ export const asyncRoutes = [
     redirect: '/items/barang-table',
     name: 'Barang',
     meta: {
-      title: 'Table Barang',
-      icon: 'table',
+      title: 'Barang',
+      icon: 'item',
       permissions: ['view menu table'],
     },
     children: [
@@ -168,7 +147,7 @@ export const asyncRoutes = [
         component: () => import('@/views/items/List'),
         name: 'BarangTable',
         meta: {
-          title: 'Table Barang', icon: 'table',
+          title: 'Table Barang', icon: 'item',
         },
       },
     ],
@@ -179,8 +158,8 @@ export const asyncRoutes = [
     redirect: '/auction/Lelang-table',
     name: 'Lelang',
     meta: {
-      title: 'Table Lelang',
-      icon: 'table',
+      title: 'Lelang',
+      icon: 'auction',
       permissions: ['view menu table'],
     },
     children: [
@@ -189,25 +168,33 @@ export const asyncRoutes = [
         component: () => import('@/views/auction/List'),
         name: 'LelangTable',
         meta: {
-          title: 'Table Lelang', icon: 'table',
+          title: 'Hasil Lelang', icon: 'auction',
         },
       },
     ],
   },
-  errorRoutes,
   // {
-  //   path: '/i18n',
+  //   path: '/reporting',
   //   component: Layout,
-  //   meta: { permissions: ['view menu i18n'] },
+  //   redirect: '/reporting/Laporan-table',
+  //   name: 'Lelang',
+  //   meta: {
+  //     title: 'Laporan',
+  //     icon: 'reporting',
+  //     permissions: ['view menu table'],
+  //   },
   //   children: [
   //     {
-  //       path: 'index',
-  //       component: () => import('@/views/i18n'),
-  //       name: 'I18n',
-  //       meta: { title: 'i18n', icon: 'international' },
+  //       path: 'reporting-table',
+  //       component: () => import('@/views/reporting/List'),
+  //       name: 'LaporanTable',
+  //       meta: {
+  //         title: 'Laporan', icon: 'reporting',
+  //       },
   //     },
   //   ],
   // },
+  adminRoutes,
   { path: '*', redirect: '/404', hidden: true },
 ];
 

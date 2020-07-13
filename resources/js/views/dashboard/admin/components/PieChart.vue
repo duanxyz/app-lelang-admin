@@ -27,9 +27,7 @@ export default {
         return {
           kendaraan: '',
           elektronik: '',
-          emas: '',
-          perikanan: '',
-          pertanian: '',
+          perhiasan: '',
           sertifikat: '',
         };
       },
@@ -72,9 +70,7 @@ export default {
           data: [
             'Elektronik',
             'Sertifikat',
-            'Emas',
-            'Perikanan',
-            'Pertanian',
+            'Perhiasan',
             'Kendaraan',
           ],
         },
@@ -89,9 +85,7 @@ export default {
             data: [
               { value: this.category.elektronik, name: 'Elektronik' },
               { value: this.category.sertifikat, name: 'Sertifikat' },
-              { value: this.category.emas, name: 'Emas' },
-              { value: this.category.perikanan, name: 'Perikanan' },
-              { value: this.category.pertanian, name: 'Pertanian' },
+              { value: this.category.emas, name: 'Perhiasan' },
               { value: this.category.kendaraan, name: 'Kendaraan' },
             ],
             animationEasing: 'cubicInOut',

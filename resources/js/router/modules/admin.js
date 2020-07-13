@@ -60,12 +60,6 @@ const adminRoutes = {
       meta: { title: 'editArticle', noCache: true, permissions: ['manage article'] },
       hidden: true,
     },
-    {
-      path: 'articles',
-      component: () => import('@/views/articles/List'),
-      name: 'ArticleList',
-      meta: { title: 'articleList', icon: 'list', permissions: ['manage article'] },
-    },
   ],
 };
 

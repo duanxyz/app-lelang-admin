@@ -37,11 +37,6 @@
           <span>{{ scope.row.index }}</span>
         </template>
       </el-table-column>
-      <!-- <el-table-column label="Username" width="130px" align="center">
-        <template slot-scope="scope">
-          <span>{{ scope.row.user.username }}</span>
-        </template>
-      </el-table-column>-->
       <el-table-column label="Nama Barang" width="170px" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.item_name }}</span>

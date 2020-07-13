@@ -52,6 +52,10 @@ class UserController extends Controller
             $userQuery->whereHas('roles', function ($q) use ($role) {
                 $q->where('name', $role);
             });
+        } else {
+            $userQuery->whereHas('roles', function ($q) use ($role) {
+                $q->whereIn('name', ['admin', 'manager', 'pegawai']);
+            });
         }
 
         if (!empty($keyword)) {
@@ -143,7 +147,7 @@ class UserController extends Controller
                 return response()->json(['error' => 'Email has been taken'], 403);
             }
 
-            $user->name = $request->get('username');
+            $user->username = $request->get('username');
             $user->email = $email;
             $user->save();
             return new UserResource($user);

@@ -2,10 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\LoginResource;
 use App\Http\Resources\MemberResource;
+use App\Http\Resources\UserResource;
+use App\Laravue\JsonResponse;
 use App\Laravue\Models\Member;
+use App\Laravue\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
 
 class MemberController extends Controller
 {
@@ -98,5 +104,22 @@ class MemberController extends Controller
     public function destroy(Member $member)
     {
         //
+    }
+
+    public function login(Request $request)
+    {
+        $credentials = $request->only('email', 'password');
+        if (!Auth::attempt($credentials)) {
+            return response()->json(new JsonResponse([], 'login_error'), Response::HTTP_UNAUTHORIZED);
+        }
+
+        $user = $request->user();
+        $token = $user->createToken('laravue');
+
+        // return response()->json($data);
+        // return new MemberResource($data);
+
+        return response()->json(new LoginResource($user), Response::HTTP_OK)->header('Authorization', $token->plainTextToken);
+
     }
 }

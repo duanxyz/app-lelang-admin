@@ -65,8 +65,8 @@ export default {
     };
     return {
       loginForm: {
-        email: 'admin@laravue.dev',
-        password: 'laravue',
+        email: 'admin@lelang.dev',
+        password: 'lelang',
       },
       loginRules: {
         email: [{ required: true, trigger: 'blur', validator: validateEmail }],

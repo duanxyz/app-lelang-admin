@@ -13,27 +13,30 @@
           <span>{{ scope.row.id }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Nama Pengirim" width="220px" align="center">
+      <el-table-column label="Nama Pengirim" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.sender }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="No Rekening" width="170px" align="center">
+      <el-table-column label="No Rekening" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.account_number }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Jumlah Deposit" width="130px" align="center">
+      <el-table-column label="Jumlah Deposit" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.deposit_amount }}</span>
+          <span>Rp.{{ formatPrice(scope.row.deposit_amount) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Bukti" width="180px" align="center">
+      <el-table-column label="Bukti" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.proof }}</span>
+          <el-image
+            :src="'/images/proof/'+scope.row.proof"
+            @click="setSrcList('/images/proof/'+scope.row.proof)"
+          />
         </template>
       </el-table-column>
-      <el-table-column label="Tanggal Deposit" width="140px" align="center">
+      <el-table-column label="Tanggal Deposit" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.sent_date | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
@@ -59,6 +62,9 @@
       :limit.sync="listQuery.limit"
       @pagination="getList"
     />
+    <el-dialog :visible.sync="imageVisible">
+      <el-image :src="img" />
+    </el-dialog>
   </div>
 </template>
 
@@ -95,6 +101,8 @@ export default {
       },
       statusOptions: ['published', 'draft', 'Not Verified'],
       downloadLoading: false,
+      img: '',
+      imageVisible: false,
     };
   },
   created() {
@@ -126,6 +134,14 @@ export default {
         .catch(error => {
           console.log(error);
         });
+    },
+    setSrcList(photo) {
+      this.img = photo;
+      this.imageVisible = true;
+    },
+    formatPrice(value) {
+      const val = (value / 1).toFixed(2).replace('.', ',');
+      return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
     },
   },
 };

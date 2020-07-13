@@ -34,7 +34,7 @@
       style="width: 100%;"
       @sort-change="sortChange"
     >
-      <el-table-column align="center" label="ID" width="80">
+      <el-table-column align="center" label="ID" width="50px">
         <template slot-scope="scope">
           <span>{{ scope.row.index }}</span>
         </template>
@@ -44,39 +44,39 @@
           <span>{{ scope.row.user.username }}</span>
         </template>
       </el-table-column> -->
-      <el-table-column label="Nama" width="210px" align="center">
+      <el-table-column label="Nama" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.name }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Email" width="225px" align="center">
+      <el-table-column label="Email" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.email }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="No Telpon" width="180px" align="center">
+      <el-table-column label="No Telpon" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.phone_number }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Saldo" width="180px" align="center">
+      <el-table-column label="Saldo" align="center">
         <template slot-scope="scope">
           <router-link :to="'/members/member/view/'+5853" class="link-type">
-            <span>{{ scope.row.saldo }}</span>
+            <span>Rp.{{ formatPrice(scope.row.saldo) }}</span>
           </router-link>
         </template>
       </el-table-column>
-      <el-table-column label="date" width="150px" align="center">
+      <el-table-column label="date" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.created_at | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="status" class-name="status-col" width="100">
+      <el-table-column label="status" class-name="status-col">
         <template slot-scope="{row}">
           <el-tag :type="row.status | statusFilter">{{ row.status }}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="Actions" width="120">
+      <el-table-column align="center" label="Actions" width="100px">
         <template slot-scope="scope">
           <router-link :to="'/members/member/view/'+scope.row.id">
             <el-button type="primary" size="small" icon="money">Detail</el-button>
@@ -134,15 +134,6 @@ export default {
   },
   methods: {
     async getList() {
-      // this.listLoading = true;
-      // const { data } = await memberResource.list({});
-      // this.list = data;
-      // // const { data } = await memberResource.list(this.listQuery);
-      // // this.list = data.items;
-      // // this.total = data.total;
-
-      // // Just to simulate the time of the request
-      // this.listLoading = false;
       const { limit, page } = this.listQuery;
       this.listLoading = true;
       const { data, meta } = await memberResource.list(this.listQuery);
@@ -152,6 +143,10 @@ export default {
       });
       this.total = meta.total;
       this.listLoading = false;
+    },
+    formatPrice(value) {
+      const val = (value / 1).toFixed(2).replace('.', ',');
+      return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
     },
     // indexMethod(index) {
     //   return index + 1;

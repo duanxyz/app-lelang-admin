@@ -49,9 +49,9 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="Name">
+      <el-table-column align="center" label="Username">
         <template slot-scope="scope">
-          <span>{{ scope.row.name }}</span>
+          <span>{{ scope.row.username }}</span>
         </template>
       </el-table-column>
 
@@ -69,17 +69,14 @@
 
       <el-table-column align="center" label="Actions" width="350">
         <template slot-scope="scope">
-          <router-link
-            v-if="!scope.row.roles.includes('admin')"
-            :to="'/administrator/users/edit/'+scope.row.id"
-          >
-            <el-button
-              v-permission="['manage user']"
-              type="primary"
-              size="small"
-              icon="el-icon-edit"
-            >Edit</el-button>
-          </router-link>
+          <el-button
+            v-if="scope.row.roles.includes('pegawai')"
+            v-permission="['manage user']"
+            type="primary"
+            size="small"
+            icon="el-icon-edit"
+            @click="handleEdit(scope.row.id)"
+          >Edit</el-button>
           <el-button
             v-if="!scope.row.roles.includes('admin')"
             v-permission="['manage permission']"
@@ -89,12 +86,12 @@
             @click="handleEditPermissions(scope.row.id);"
           >Permissions</el-button>
           <el-button
-            v-if="scope.row.roles.includes('visitor')"
+            v-if="scope.row.roles.includes('pegawai')"
             v-permission="['manage user']"
             type="danger"
             size="small"
             icon="el-icon-delete"
-            @click="handleDelete(scope.row.id, scope.row.name);"
+            @click="handleDelete(scope.row.id, scope.row.username);"
           >Delete</el-button>
         </template>
       </el-table-column>
@@ -110,9 +107,9 @@
 
     <el-dialog
       :visible.sync="dialogPermissionVisible"
-      :title="'Edit Permissions - ' + currentUser.name"
+      :title="'Edit Permissions - ' + currentUser.username"
     >
-      <div v-if="currentUser.name" v-loading="dialogPermissionLoading" class="form-container">
+      <div v-if="currentUser.username" v-loading="dialogPermissionLoading" class="form-container">
         <div class="permissions-container">
           <div class="block">
             <el-form :model="currentUser" label-width="80px" label-position="top">
@@ -156,7 +153,7 @@
       </div>
     </el-dialog>
 
-    <el-dialog :title="'Create new user'" :visible.sync="dialogFormVisible">
+    <el-dialog :title="formTitle" :visible.sync="dialogFormVisible">
       <div v-loading="userCreating" class="form-container">
         <el-form
           ref="userForm"
@@ -166,7 +163,7 @@
           label-width="150px"
           style="max-width: 500px;"
         >
-          <el-form-item :label="$t('user.role')" prop="role">
+          <el-form-item v-if="passwordCreate" :label="$t('user.role')" prop="role">
             <el-select v-model="newUser.role" class="filter-item" placeholder="Please select role">
               <el-option
                 v-for="item in nonAdminRoles"
@@ -176,16 +173,20 @@
               />
             </el-select>
           </el-form-item>
-          <el-form-item :label="$t('user.name')" prop="name">
-            <el-input v-model="newUser.name" />
+          <el-form-item label="username" prop="username">
+            <el-input v-model="newUser.username" />
           </el-form-item>
           <el-form-item :label="$t('user.email')" prop="email">
             <el-input v-model="newUser.email" />
           </el-form-item>
-          <el-form-item :label="$t('user.password')" prop="password">
+          <el-form-item v-if="passwordCreate" :label="$t('user.password')" prop="password">
             <el-input v-model="newUser.password" show-password />
           </el-form-item>
-          <el-form-item :label="$t('user.confirmPassword')" prop="confirmPassword">
+          <el-form-item
+            v-if="passwordCreate"
+            :label="$t('user.confirmPassword')"
+            prop="confirmPassword"
+          >
             <el-input v-model="newUser.confirmPassword" show-password />
           </el-form-item>
         </el-form>
@@ -216,7 +217,7 @@ export default {
   data() {
     var validateConfirmPassword = (rule, value, callback) => {
       if (value !== this.newUser.password) {
-        callback(new Error('Password is mismatched!'));
+        callback(new Error('Kata sandi tidak cocok!'));
       } else {
         callback();
       }
@@ -233,15 +234,17 @@ export default {
         keyword: '',
         role: '',
       },
-      roles: ['admin', 'manager', 'editor', 'user', 'visitor'],
-      nonAdminRoles: ['editor', 'user', 'visitor'],
+      formTitle: '',
+      passwordCreate: null,
+      roles: ['admin', 'manager', 'pegawai'],
+      nonAdminRoles: ['pegawai', 'manager'],
       newUser: {},
       dialogFormVisible: false,
       dialogPermissionVisible: false,
       dialogPermissionLoading: false,
       currentUserId: 0,
       currentUser: {
-        name: '',
+        username: '',
         permissions: [],
         rolePermissions: [],
       },
@@ -249,8 +252,8 @@ export default {
         role: [
           { required: true, message: 'Role is required', trigger: 'change' },
         ],
-        name: [
-          { required: true, message: 'Name is required', trigger: 'blur' },
+        username: [
+          { required: true, message: 'Username is required', trigger: 'blur' },
         ],
         email: [
           { required: true, message: 'Email is required', trigger: 'blur' },
@@ -381,11 +384,19 @@ export default {
       this.getList();
     },
     handleCreate() {
+      this.formTitle = 'Create new user';
+      this.passwordCreate = true;
       this.resetNewUser();
       this.dialogFormVisible = true;
       this.$nextTick(() => {
         this.$refs['userForm'].clearValidate();
       });
+    },
+    handleEdit(id) {
+      this.formTitle = 'Edit user';
+      this.passwordCreate = false;
+      this.newUser = this.list.find(user => user.id === id);
+      this.dialogFormVisible = true;
     },
     handleDelete(id, name) {
       this.$confirm(
@@ -440,53 +451,72 @@ export default {
       });
     },
     createUser() {
-      this.$refs['userForm'].validate(valid => {
-        if (valid) {
-          this.newUser.roles = [this.newUser.role];
-          this.userCreating = true;
-          userResource
-            .store(this.newUser)
-            .then(response => {
-              this.$message({
-                message:
-                  'New user ' +
-                  this.newUser.name +
-                  '(' +
-                  this.newUser.email +
-                  ') has been created successfully.',
-                type: 'success',
-                duration: 5 * 1000,
-              });
-              this.resetNewUser();
-              this.dialogFormVisible = false;
-              this.handleFilter();
-            })
-            .catch(error => {
-              console.log(error);
-            })
-            .finally(() => {
-              this.userCreating = false;
+      if (this.newUser.id !== undefined) {
+        this.userCreating = true;
+        userResource
+          .update(this.newUser.id, this.newUser)
+          .then(response => {
+            this.userCreating = false;
+            this.$message({
+              message: 'User information has been updated successfully',
+              type: 'success',
+              duration: 5 * 1000,
             });
-        } else {
-          console.log('error submit!!');
-          return false;
-        }
-      });
+            this.dialogFormVisible = false;
+          })
+          .catch(error => {
+            console.log(error);
+            this.userCreating = false;
+          });
+      } else {
+        this.$refs['userForm'].validate(valid => {
+          if (valid) {
+            this.newUser.roles = [this.newUser.role];
+            this.userCreating = true;
+            userResource
+              .store(this.newUser)
+              .then(response => {
+                this.$message({
+                  message:
+                    'New user ' +
+                    this.newUser.username +
+                    '(' +
+                    this.newUser.email +
+                    ') has been created successfully.',
+                  type: 'success',
+                  duration: 5 * 1000,
+                });
+                this.resetNewUser();
+                this.dialogFormVisible = false;
+                this.handleFilter();
+              })
+              .catch(error => {
+                console.log(error);
+              })
+              .finally(() => {
+                this.userCreating = false;
+              });
+          } else {
+            console.log('error submit!!');
+            return false;
+          }
+        });
+      }
     },
     resetNewUser() {
       this.newUser = {
-        name: '',
+        username: '',
         email: '',
         password: '',
         confirmPassword: '',
-        role: 'user',
+        role: 'pegawai',
       };
     },
     handleDownload() {
       this.downloading = true;
       import('@/vendor/Export2Excel').then(excel => {
-        const tHeader = ['id', 'user_id', 'name', 'email', 'role'];
-        const filterVal = ['index', 'id', 'name', 'email', 'role'];
+        const tHeader = ['id', 'user_id', 'username', 'email', 'role'];
+        const filterVal = ['index', 'id', 'username', 'email', 'role'];
         const data = this.formatJson(filterVal, this.list);
         excel.export_json_to_excel({
           header: tHeader,

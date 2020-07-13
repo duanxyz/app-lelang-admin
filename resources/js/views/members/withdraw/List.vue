@@ -25,15 +25,15 @@
       </el-table-column>
       <el-table-column label="Jumlah Penarikan" width="180px" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.withdraw_amount }}</span>
+          <span>Rp.{{ formatPrice(scope.row.withdraw_amount) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Tanggal Permintaan" width="190px" align="center">
+      <el-table-column label="Tanggal Permintaan" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.created_at | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="Actions" width="190" class-name="small-padding fixed-width">
+      <el-table-column align="center" label="Actions" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
             size="small"
@@ -109,6 +109,10 @@ export default {
         .catch(error => {
           console.log(error);
         });
+    },
+    formatPrice(value) {
+      const val = (value / 1).toFixed(2).replace('.', ',');
+      return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
     },
   },
 };
