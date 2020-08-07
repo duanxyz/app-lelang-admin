@@ -30,6 +30,9 @@ class MemberResource extends JsonResource
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'avatar' => 'https://i.pravatar.cc',
+            'proof' => Wallet::find($this->id)->deposit()
+                ->where('wallet_id', $this->id)
+                ->where('status', 'not approved')->first(),
         ];
     }
 }

@@ -31,7 +31,7 @@
             <div class="user-bio-section-header">
               <span>Saldo</span>
             </div>
-            <div class="text-muted">{{ wallet.balance }}</div>
+            <div class="text-muted">Rp. {{ formatPrice(wallet.balance) }}</div>
           </div>
           <div class="user-bio-section">
             <div class="user-bio-section-header">
@@ -77,10 +77,10 @@ export default {
     return {};
   },
   methods: {
-    // getRole() {
-    //   const roles = this.user.roles.map(value => this.$options.filters.uppercaseFirst(value));
-    //   return roles.join(' | ');
-    // },
+    formatPrice(value) {
+      const val = (value / 1).toFixed(2).replace('.', ',');
+      return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    },
   },
 };
 </script>

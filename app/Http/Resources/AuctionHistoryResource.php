@@ -21,6 +21,7 @@ class AuctionHistoryResource extends JsonResource
             'item_id' => $this->item_id,
             'item_name' => Item::find($this->item_id)->item_name,
             'initial_price' => Item::find($this->item_id)->initial_price,
+            'category' => Item::find($this->item_id)->category,
             'final_price' => $this->final_price,
             'auction_winner' => $this->auction_winner,
             'created_at' => $this->created_at,

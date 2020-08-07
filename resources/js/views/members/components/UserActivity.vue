@@ -2,56 +2,24 @@
   <el-card v-if="user.name">
     <el-tabs v-model="activeActivity" @tab-click="handleClick">
       <el-tab-pane label="Riwayat Transaksi" name="first">
-        <div class="user-activity">Riwayat Transaksi</div>
-      </el-tab-pane>
-      <el-tab-pane label="Info Deposit" name="second">
-        <el-table :data="deposit" style="width: 100%">
-          <el-table-column fixed prop="sent_date" label="Tanggal Kirim" width="120" align="center" />
-          <el-table-column prop="sender" label="Nama Pengirim" width="150" align="center" />
-          <el-table-column prop="account_number" label="No. Rekening" width="160" align="center" />
-          <el-table-column prop="deposit_amount" label="Jumlah" width="130" align="center" />
-          <el-table-column label="Bukti" width="120" align="center">
-            <template slot-scope="scope">
-              <el-image
-                :src="scope.row.proof"
-                style="width: 50px; height: 50px;"
-                :preview-src-list="srcList"
-              />
-            </template>
-          </el-table-column>
-          <el-table-column prop="status" label="Status" width="120" />
-          <el-table-column fixed="right" label="Operations" width="120">
-            <template slot-scope="scope">
-              <el-button
-                size="mini"
-                type="success"
-                @click="updateData(scope.row.wallet_id, scope.row, 'Deposit')"
-              >Terima</el-button>
-            </template>
-          </el-table-column>
-        </el-table>
-      </el-tab-pane>
-      <el-tab-pane label="Info Withdraw" name="third">
-        <el-table :data="withdraw" style="width: 100%">
+        <el-table :data="history" style="width: 100%">
           <el-table-column
-            fixed
-            prop="created_at"
             label="Tanggal Permintaan"
-            width="120"
             align="center"
-          />
-          <el-table-column prop label="Nama Bank" width="150" align="center" />
-          <el-table-column prop="receiver" label="Nama Penerima" width="150" align="center" />
-          <el-table-column prop="account_number" label="No. Rekening" width="160" align="center" />
-          <el-table-column prop="withdraw_amount" label="Jumlah" width="130" align="center" />
-          <el-table-column prop="status" label="Status" width="120" />
-          <el-table-column fixed="right" label="Operations" width="120">
+          >
             <template slot-scope="scope">
-              <el-button
-                size="mini"
-                type="success"
-                @click="updateData(scope.row.wallet_id, scope.row, 'Withdraw')"
-              >Terima</el-button>
+              {{ scope.row.created_at | parseTime('{y}-{m}-{d} {h}:{i}') }}
+            </template>
+          </el-table-column>
+          <el-table-column label="Nominal" align="center">
+            <template slot-scope="scope">
+              Rp. {{ formatPrice(scope.row.nominal) }}
+            </template>
+          </el-table-column>
+          <el-table-column prop="keterangan" label="Keterangan" align="center" />
+          <el-table-column label="Saldo Akhir" align="center">
+            <template slot-scope="scope">
+              Rp. {{ formatPrice(scope.row.ending_balance) }}
             </template>
           </el-table-column>
         </el-table>
@@ -61,37 +29,20 @@
 </template>
 
 <script>
+
 export default {
   props: {
     // eslint-disable-next-line vue/require-default-prop
     method: { type: Function },
-    deposit: {
+    history: {
       type: Array,
       default: () => {
         return {
           wallet_id: '',
-          sender: '',
-          account_number: '',
-          deposit_amount: '',
-          proof: '',
-          sent_date: '',
-          status: '',
-        };
-      },
-    },
-    withdraw: {
-      type: Array,
-      default: () => {
-        return {
-          wallet_id: '',
-        };
-      },
-    },
-    spending: {
-      type: Array,
-      default: () => {
-        return {
-          wallet_id: '',
+          nominal: '',
+          keterangn: '',
+          ending_balance: '',
+          created_at: '',
         };
       },
     },
@@ -122,8 +73,9 @@ export default {
     };
   },
   methods: {
-    updateData(id, row, msg) {
-      this.method(id, row, msg);
+    formatPrice(value) {
+      const val = (value / 1).toFixed(2).replace('.', ',');
+      return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
     },
     handleClick(tab, event) {
       console.log('Switching tab ', tab, event);

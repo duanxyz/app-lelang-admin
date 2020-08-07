@@ -2,6 +2,8 @@
 
 namespace App\Http\Resources;
 
+use App\Laravue\Models\Member;
+use App\Laravue\Models\User;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class LoginResource extends JsonResource
@@ -19,7 +21,7 @@ class LoginResource extends JsonResource
             'success' => true,
             'data' => [
                 'id' => $this->id,
-                'memberId' => $this->id + 5,
+                'memberId' => User::find($this->id)->member->id,
                 'username' => $this->username,
                 'email' => $this->email,
                 'roles' => array_map(
@@ -35,7 +37,7 @@ class LoginResource extends JsonResource
                     $this->getAllPermissions()->toArray()
                 ),
                 'avatar' => 'https://i.pravatar.cc',
-                ],
-            ];
+            ],
+        ];
     }
 }

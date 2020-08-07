@@ -18,10 +18,10 @@ class ReportingController extends Controller
         $item = Item::all();
         $deposit = Deposit_info::where("status", "approved")->count();
         $withdraw = Withdrawal_info::where("status", "approved")->count();
-        $elektronik = Item::where("category", "elektronik")->count();
-        $sertifikat = Item::where("category", "sertifikat")->count();
-        $perhiasan = Item::where("category", "perhiasan")->count();
-        $kendaraan = Item::where("category", "kendaraan")->count();
+        $elektronik = Item::where("category", "elektronik")->where('status', 'selesai')->count();
+        $sertifikat = Item::where("category", "sertifikat")->where('status', 'selesai')->count();
+        $perhiasan = Item::where("category", "perhiasan")->where('status', 'selesai')->count();
+        $kendaraan = Item::where("category", "kendaraan")->where('status', 'selesai')->count();
         $ordersByWeek = Member::select([
             DB::raw('count(id) as data'),
             DB::raw('Month(created_at) as bulan'),

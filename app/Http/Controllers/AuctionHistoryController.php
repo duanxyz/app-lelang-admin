@@ -20,10 +20,22 @@ class AuctionHistoryController extends Controller
         $resultQuery = Auction_history::query();
         $limit = Arr::get($searchParams, 'limit');
         $keyword = Arr::get($searchParams, 'keyword', '');
+        $category = Arr::get($searchParams, 'category', '');
+        $year = Arr::get($searchParams, 'year', '');
 
         if (!empty($keyword)) {
-            $resultQuery->where('item_name', 'LIKE', '%' . $keyword . '%');
+            $resultQuery->join('items', 'auction_histories.item_id', '=', 'items.id')
+                ->select('auction_histories.*')
+                ->where('item_name', 'LIKE', '%' . $keyword . '%');
         }
+        if (!empty($category)) {
+            $resultQuery->join('items', 'auction_histories.item_id', '=', 'items.id')
+                ->where('category', $category);
+        }
+        if (!empty($year)) {
+            $resultQuery->where('auction_histories.updated_at', 'LIKE', '%' . $year . '%');
+        }
+        $resultQuery->orderBy('auction_histories.created_at', 'desc');
 
         return AuctionHistoryResource::collection($resultQuery->paginate($limit));
     }

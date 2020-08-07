@@ -9,8 +9,8 @@ use Faker\Generator as Faker;
 
 $factory->define(Auction_history::class, function (Faker $faker) {
     return [
-        'item_id' => $faker->numberBetween($min="1", $max="10"),
-        'final_price' => $faker->numberBetween($min="500000", $max="10000000"),
+        'item_id' => $faker->numberBetween($min = "51", $max = "70"),
+        'final_price' => $faker->numberBetween($min = "500000", $max = "10000000"),
         'auction_winner' => $faker->name(),
     ];
 });

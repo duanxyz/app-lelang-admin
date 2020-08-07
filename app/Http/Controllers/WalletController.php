@@ -76,7 +76,7 @@ class WalletController extends Controller
     public function update(Request $request, Wallet $wallet)
     {
         if ($wallet === null) {
-            return response()->json(['error' => 'Category not found'], 404);
+            return response()->json(['error' => 'wallet not found'], 404);
         }
 
         $validator = Validator::make(
@@ -86,7 +86,7 @@ class WalletController extends Controller
             ]
         );
 
-        $status = "approve";
+        $status = "approved";
 
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 403);
@@ -94,9 +94,21 @@ class WalletController extends Controller
             $params = $request->all();
             if (array_key_exists("sender", $params)) {
                 $wallet->balance = $wallet->balance + $params['deposit_amount'];
+                $wallet->history()->create([
+                    'wallet_id' => $params['wallet_id'],
+                    'keterangan' => 'setor',
+                    'nominal' => $params['deposit_amount'],
+                    'ending_balance' => $wallet->balance = $wallet->balance + $params['deposit_amount'],
+                ]);
                 $relasi = $wallet->deposit();
             } else {
                 $wallet->balance = $wallet->balance - $params['withdraw_amount'];
+                $wallet->history()->create([
+                    'wallet_id' => $params['wallet_id'],
+                    'keterangan' => 'tarik',
+                    'nominal' => $params['withdraw_amount'],
+                    'ending_balance' => $wallet->balance = $wallet->balance + $params['withdraw_amount'],
+                ]);
                 $relasi = $wallet->withdraw();
             }
             $wallet->save();

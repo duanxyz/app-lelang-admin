@@ -27,4 +27,9 @@ class Wallet extends Model
     {
         return $this->hasMany(Spending::class);
     }
+
+    public function history()
+    {
+        return $this->hasMany(Balance_history::class);
+    }
 }

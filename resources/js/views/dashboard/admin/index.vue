@@ -8,7 +8,7 @@
           <pie-chart v-if="status" :category.sync="reportCategory" />
         </div>
       </el-col>
-      <el-col :xs="24" :sm="24" :lg="16" hidden>
+      <el-col :xs="24" :sm="24" :lg="15" hidden>
         <div class="chart-wrapper">
           <line-chart v-if="status" :chart-data="lineChartData" />
         </div>
@@ -72,10 +72,26 @@ export default {
       this.reportData = data;
       this.reportCategory = item;
       this.reportBulan = bulan;
-      this.lineChartData.expectedData = this.reportBulan.map(a => a.data);
+      // const ss = [];
+      const length = this.reportBulan[this.reportBulan.length - 1].bulan;
+      for (let index = 0; index < this.reportBulan[this.reportBulan.length - 1]; index++) {
+        console.log(this.reportBulan[index].bulan);
+
+        // if (this.reportBulan[index].bulan === index + 1){
+        //   // console.log(this.lineChartData.expectedData);
+        //   ss.push(this.reportBulan[index].data);
+        // } else {
+        //   ss.push(0);
+        // this.lineChartData.expectedData.push(0);
+        // console.log(this.lineChartData.expectedData);
+        // }s
+      }
+      // this.lineChartData.expectedData = this.reportBulan.map(a => a[0].data);
+      // console.log(this.reportBulan[1].bulan);
+      // console.log(this.lineChartData.expectedData);
+      console.log(length);
       this.lineChartData.actualData = this.reportBulan.map(a => a.data);
-      console.log(this.lineChartData.expectedData);
-      console.log(this.lineChartData.actualData);
+
       this.status = true;
     },
     handleSetLineChartData(type) {

@@ -24,12 +24,18 @@ class MemberController extends Controller
     {
         $params = $request->all();
         $userQuery = Member::query();
+        $limit = Arr::get($params, 'limit');
         $byId = Arr::get($params, 'id', '');
+        $keyword = Arr::get($params, 'keyword', '');
         if ((!empty($byId))) {
             $userQuery->where('id', $byId);
         }
+        if ((!empty($keyword))) {
+            $userQuery->where('name', 'LIKE', '%' . $keyword . '%');
+        }
+        $userQuery->orderBy('updated_at', 'desc');
         //$limit = Arr::get($searchParams, 'limit', static::ITEM_PER_PAGE);
-        return MemberResource::collection($userQuery->paginate(15));
+        return MemberResource::collection($userQuery->paginate($limit));
     }
 
     /**
@@ -120,6 +126,5 @@ class MemberController extends Controller
         // return new MemberResource($data);
 
         return response()->json(new LoginResource($user), Response::HTTP_OK)->header('Authorization', $token->plainTextToken);
-
     }
 }

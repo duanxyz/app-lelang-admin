@@ -8,6 +8,23 @@
         class="filter-item"
         @keyup.enter.native="handleFilter"
       />
+      <el-select
+        v-model="listQuery.category"
+        placeholder="kategori"
+        clearable
+        style="width: 90px"
+        class="filter-item"
+        @change="handleFilter"
+      >
+        <el-option v-for="item in items" :key="item" :label="item | uppercaseFirst" :value="item" />
+      </el-select>
+      <el-date-picker
+        v-model="listQuery.year"
+        type="year"
+        class="filter-item"
+        value-format="yyyy"
+        placeholder="Pilih tahun"
+      />
       <el-button
         v-waves
         class="filter-item"
@@ -25,32 +42,37 @@
       highlight-current-row
       style="width: 100%;"
     >
-      <el-table-column align="center" label="ID" width="60">
+      <el-table-column align="center" label="No" width="60">
         <template slot-scope="scope">
           <span>{{ scope.row.index }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Nama Barang" width="220px" align="center">
+      <el-table-column label="Nama Barang" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.item_name }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Harga Awal" width="140px" align="center">
+      <el-table-column label="Harga Awal" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.initial_price }}</span>
+          <span>Rp. {{ formatPrice(scope.row.initial_price) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Harga Akhir" width="140px" align="center">
+      <el-table-column label="Harga Akhir" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.final_price }}</span>
+          <span>Rp. {{ formatPrice(scope.row.final_price) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Pemenang Lelang" width="220px" align="center">
+      <el-table-column label="Kategori" align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.category }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="Pemenang Lelang" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.auction_winner }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Tanggal Lelang" width="150px" align="center">
+      <el-table-column label="Tanggal Lelang" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.created_at | parseTime('{y}-{m}-{d}') }}</span>
         </template>
@@ -93,7 +115,7 @@
           </el-table-column>
           <el-table-column align="center" label="Jumlah tawaran">
             <template slot-scope="scope">
-              <span>{{ scope.row.offer }}</span>
+              <span>Rp. {{ formatPrice(scope.row.offer) }}</span>
             </template>
           </el-table-column>
         </el-table>
@@ -130,6 +152,7 @@ export default {
         limit: 15,
         keyword: '',
         item_id: null,
+        category: '',
       },
       listQueryAuction: {
         page: 1,
@@ -140,6 +163,7 @@ export default {
       history: null,
       dialogStatus: '',
       dialogFormVisible: false,
+      items: ['perhiasan', 'kendaraan', 'sertifikat', 'elektronik'],
     };
   },
   created() {
@@ -176,6 +200,10 @@ export default {
     handleFilter() {
       this.listQuery.page = 1;
       this.getList();
+    },
+    formatPrice(value) {
+      const val = (value / 1).toFixed(2).replace('.', ',');
+      return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
     },
     // indexMethod(index) {
     //   return index + 1;

@@ -85,7 +85,7 @@ export default {
             data: [
               { value: this.category.elektronik, name: 'Elektronik' },
               { value: this.category.sertifikat, name: 'Sertifikat' },
-              { value: this.category.emas, name: 'Perhiasan' },
+              { value: this.category.perhiasan, name: 'Perhiasan' },
               { value: this.category.kendaraan, name: 'Kendaraan' },
             ],
             animationEasing: 'cubicInOut',

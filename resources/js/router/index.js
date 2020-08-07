@@ -106,20 +106,20 @@ export const asyncRoutes = [
           title: 'Table Member', icon: 'peoples',
         },
       },
-      {
-        path: 'deposit-table',
-        component: () => import('@/views/members/deposits/List'),
-        name: 'DepositTable',
-        meta: {
-          title: 'Table Deposit', icon: 'deposit',
-        },
-      },
+      // {
+      //   path: 'deposit-table',
+      //   component: () => import('@/views/members/deposits/List'),
+      //   name: 'DepositTable',
+      //   meta: {
+      //     title: 'Setor Uang', icon: 'deposit',
+      //   },
+      // },
       {
         path: 'withdraw-table',
         component: () => import('@/views/members/withdraw/List'),
         name: 'WithdrawTable',
         meta: {
-          title: 'Table Withdraw', icon: 'withdraw',
+          title: 'Tarik Uang', icon: 'withdraw',
         },
       },
       {
@@ -168,7 +168,7 @@ export const asyncRoutes = [
         component: () => import('@/views/auction/List'),
         name: 'LelangTable',
         meta: {
-          title: 'Hasil Lelang', icon: 'auction',
+          title: 'Laporan', icon: 'auction',
         },
       },
     ],

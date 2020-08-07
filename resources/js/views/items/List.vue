@@ -8,6 +8,16 @@
         class="filter-item"
         @keyup.enter.native="handleFilter"
       />
+      <el-select
+        v-model="listQuery.category"
+        placeholder="kategori"
+        clearable
+        style="width: 90px"
+        class="filter-item"
+        @change="handleFilter"
+      >
+        <el-option v-for="item in items" :key="item" :label="item | uppercaseFirst" :value="item" />
+      </el-select>
       <el-button
         v-waves
         class="filter-item"
@@ -49,7 +59,7 @@
       </el-table-column>
       <el-table-column label="Harga Awal" width="120px" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.initial_price }}</span>
+          <span>Rp. {{ formatPrice(scope.row.initial_price) }}</span>
         </template>
       </el-table-column>
       <el-table-column label="Foto" width="150px" align="center">
@@ -66,7 +76,7 @@
           <span>{{ scope.row.deskripsi }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Tanggal Lelang" width="130px" align="center">
+      <el-table-column label="Jadwal Lelang" width="130px" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.auction_date | parseTime('{y}-{m}-{d}') }}</span>
         </template>
@@ -205,6 +215,7 @@ export default {
       image: '',
       newItem: {},
       dialogStatus: '',
+      items: ['perhiasan', 'kendaraan', 'sertifikat', 'elektronik'],
       img: '',
       textMap: {
         update: 'Edit',
@@ -376,6 +387,10 @@ export default {
         auction_date: '',
         auction_time: '',
       };
+    },
+    formatPrice(value) {
+      const val = (value / 1).toFixed(2).replace('.', ',');
+      return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
     },
     // indexMethod(index) {
     //   return index + 1;

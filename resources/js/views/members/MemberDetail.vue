@@ -3,11 +3,11 @@
     <el-form v-if="user" :model="user">
       <el-row :gutter="20">
         <el-col :span="6">
-          <user-card :user="user" :wallet="wallet" :deposit="deposit" />
+          <user-card :user="user" :wallet="wallet" />
           <!-- <user-bio /> -->
         </el-col>
         <el-col :span="18">
-          <user-activity :user="user" :wallet="wallet" :deposit="deposit" :withdraw="withdraw" :spending="spending" :method="updateData" />
+          <user-activity :user="user" :history="history" />
         </el-col>
       </el-row>
     </el-form>
@@ -22,6 +22,7 @@ import UserActivity from './components/UserActivity';
 
 const userResource = new Resource('members');
 const walletResource = new Resource('wallets');
+const historyResource = new Resource('history');
 export default {
   name: 'EditUser',
   components: {
@@ -32,9 +33,10 @@ export default {
     return {
       user: {},
       wallet: {},
-      deposit: [],
-      withdraw: [],
-      spending: [],
+      history: null,
+      query: {
+        id: null,
+      },
     };
   },
   watch: {
@@ -49,20 +51,21 @@ export default {
     }
     this.getUser(id);
     this.getWallet(id);
+    this.getHistory(id);
   },
   methods: {
     async getUser(id) {
       const { data } = await userResource.get(id);
       this.user = data;
     },
+    async getHistory(id) {
+      const { data } = await historyResource.list(this.query);
+      this.history = data;
+    },
     async getWallet(id) {
       // const { data } = await userResource.get(id);
-      const { data, deposit, withdraw, spending } = await walletResource.get(id);
-      // this.user = data;
+      const { data } = await walletResource.get(id);
       this.wallet = data;
-      this.deposit = deposit;
-      this.withdraw = withdraw;
-      this.spending = spending;
     },
     updateData(id, row, msg) {
       walletResource

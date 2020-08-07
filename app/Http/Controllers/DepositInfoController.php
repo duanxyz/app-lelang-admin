@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\DepositInfoResource;
 use App\Laravue\Models\Deposit_info;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Validator;
 
 class DepositInfoController extends Controller
@@ -14,12 +15,13 @@ class DepositInfoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //$searchParams = $request->all();
+        $searchParams = $request->all();
         $userQuery = Deposit_info::query()->where('status', "not approved");
-        //$limit = Arr::get($searchParams, 'limit', static::ITEM_PER_PAGE);
-        return DepositInfoResource::collection($userQuery->paginate(15));
+        $userQuery->orderBy('created_at', 'desc');
+        $limit = Arr::get($searchParams, 'limit');
+        return DepositInfoResource::collection($userQuery->paginate($limit));
     }
 
     /**
@@ -40,7 +42,28 @@ class DepositInfoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'wallet_id' => ['required'],
+                'proof' => ['required'],
+                'sent_date' => ['required'],
+            ]
+        );
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 403);
+        } else {
+            $imageName = time() . '.' . $request->file('proof')->getClientOriginalExtension();
+            $request->file('proof')->move(public_path('images/proof'), $imageName);
+            $params = $request->all();
+            $deposit = Deposit_info::create([
+                'wallet_id' => $params['wallet_id'],
+                'sent_date' => $params['sent_date'],
+                'proof' => $imageName,
+            ]);
+            return new DepositInfoResource($deposit);
+        }
     }
 
     /**

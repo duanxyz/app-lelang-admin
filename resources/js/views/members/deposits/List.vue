@@ -8,12 +8,12 @@
       highlight-current-row
       style="width: 100%;"
     >
-      <el-table-column align="center" label="ID" width="70">
+      <el-table-column align="center" label="No" width="70">
         <template slot-scope="scope">
-          <span>{{ scope.row.id }}</span>
+          <span>{{ scope.row.index }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Nama Pengirim" align="center">
+      <!-- <el-table-column label="Nama Pengirim" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.sender }}</span>
         </template>
@@ -22,7 +22,7 @@
         <template slot-scope="scope">
           <span>{{ scope.row.account_number }}</span>
         </template>
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column label="Jumlah Deposit" align="center">
         <template slot-scope="scope">
           <span>Rp.{{ formatPrice(scope.row.deposit_amount) }}</span>
@@ -36,11 +36,11 @@
           />
         </template>
       </el-table-column>
-      <el-table-column label="Tanggal Deposit" align="center">
+      <!-- <el-table-column label="Tanggal Deposit" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.sent_date | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column align="center" label="Actions" width="190" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button

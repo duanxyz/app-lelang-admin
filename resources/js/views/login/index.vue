@@ -6,11 +6,11 @@
       </h3>
 
       <!-- <lang-select class="set-language" /> -->
-      <el-form-item prop="email">
+      <el-form-item prop="username">
         <span class="svg-container">
           <svg-icon icon-class="user" />
         </span>
-        <el-input v-model="loginForm.email" name="email" type="text" auto-complete="on" :placeholder="$t('login.email')" />
+        <el-input v-model="loginForm.username" name="username" type="text" auto-complete="on" :placeholder="$t('login.username')" />
       </el-form-item>
       <el-form-item prop="password">
         <span class="svg-container">
@@ -43,14 +43,14 @@
 
 <script>
 // import LangSelect from '@/components/LangSelect';
-import { validEmail } from '@/utils/validate';
+import { validAlphabets } from '@/utils/validate';
 
 export default {
   name: 'Login',
   // components: { LangSelect },
   data() {
     const validateEmail = (rule, value, callback) => {
-      if (!validEmail(value)) {
+      if (!validAlphabets(value)) {
         callback(new Error('Silakan masukkan email yang benar'));
       } else {
         callback();
@@ -65,11 +65,11 @@ export default {
     };
     return {
       loginForm: {
-        email: 'admin@lelang.dev',
+        username: 'admin',
         password: 'lelang',
       },
       loginRules: {
-        email: [{ required: true, trigger: 'blur', validator: validateEmail }],
+        username: [{ required: true, trigger: 'blur', validator: validateEmail }],
         password: [{ required: true, trigger: 'blur', validator: validatePass }],
       },
       loading: false,

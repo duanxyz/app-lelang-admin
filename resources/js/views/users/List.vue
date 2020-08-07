@@ -32,14 +32,14 @@
         icon="el-icon-plus"
         @click="handleCreate"
       >{{ $t('table.add') }}</el-button>
-      <el-button
+      <!-- <el-button
         v-waves
         :loading="downloading"
         class="filter-item"
         type="primary"
         icon="el-icon-download"
         @click="handleDownload"
-      >{{ $t('table.export') }}</el-button>
+      >{{ $t('table.export') }}</el-button> -->
     </div>
 
     <el-table v-loading="loading" :data="list" border fit highlight-current-row style="width: 100%">

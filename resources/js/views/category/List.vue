@@ -6,7 +6,7 @@
       </el-button>
     </div>
     <el-table v-loading="loading" :data="list" border fit highlight-current-row>
-      <el-table-column align="center" label="ID" width="80" type="index" />
+      <el-table-column align="center" label="No" width="80" type="index" />
       <el-table-column align="center" label="Name">
         <template slot-scope="scope">
           <span>{{ scope.row.category_name }}</span>
